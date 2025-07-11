@@ -1,16 +1,31 @@
 namespace Catalog.API.Products.GetProducts;
 
+public sealed record GetProductRequest(
+    int? Page = 1,
+    int? PageSize = 10);
 public sealed record GetProductsResponse(
-    IEnumerable<Product> Products);
+    IEnumerable<Product> Products,
+    long Count,
+    long PageNumber,
+    long PageSize,
+    long PageCount,
+    long TotalItemCount,
+    bool HasPreviousPage,
+    bool HasNextPage,
+    bool IsFirstPage,
+    long FirstItemOnPage,
+    long LastItemOnPage);
 
 public sealed class GetProductsEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet("/products", 
-            async (ISender sender, CancellationToken cancellationToken) =>
+            async ([AsParameters] GetProductRequest request, ISender sender, CancellationToken cancellationToken) =>
             {
-                var result = await sender.Send(new GetProductsQuery(), cancellationToken);
+                var query = request.Adapt<GetProductsQuery>();
+                
+                var result = await sender.Send(query, cancellationToken);
                 return Results.Ok(result.Adapt<GetProductsResponse>());
             })
             .WithName("GetProducts")
