@@ -1,0 +1,29 @@
+services:
+  catalogdb:
+    container_name: catalogdb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=catalogdb
+    restart: always
+    ports:
+      - "5532:5432"
+    volumes:
+      - postgres_catalog:/var/lib/postgresql/data/
+
+  eshopms-pgadmin:
+    container_name:   eshopms-pgadmin 
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 9900:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: detorresrc@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: akolangto
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  postgres_catalog:
+  pgadmin-data:
