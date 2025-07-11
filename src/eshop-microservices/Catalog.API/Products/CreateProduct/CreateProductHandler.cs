@@ -10,13 +10,31 @@ public sealed record CreateProductCommand(
 public sealed record CreateProductResult(
     Guid Id);
 
-internal sealed class CreateProductHandler(IDocumentSession session)
+public sealed class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductCommandValidator()
+    {
+        RuleFor(c => c.Name).NotEmpty().WithMessage("Product name is required.");
+        RuleFor(c => c.Category).NotEmpty().WithMessage("Product category is required.");
+        RuleFor(c => c.Description).NotEmpty().WithMessage("Product description is required.");
+        RuleFor(c => c.ImageFile).NotEmpty().WithMessage("Product image file is required.");
+        RuleFor(c => c.Price)
+            .GreaterThan(0)
+            .WithMessage("Product price must be greater than zero.");
+    }
+}
+
+internal sealed class CreateProductHandler(
+    IDocumentSession session,
+    ILogger<CreateProductHandler> logger)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(
-        CreateProductCommand request, 
+        CreateProductCommand request,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("CreateProductHandler.Handle called with {@request}", request);
+        
         var product = new Product
         {
             Name = request.Name,
@@ -25,7 +43,7 @@ internal sealed class CreateProductHandler(IDocumentSession session)
             ImageFile = request.ImageFile,
             Price = request.Price
         };
-        
+
         session.Store(product);
         await session.SaveChangesAsync(cancellationToken);
 

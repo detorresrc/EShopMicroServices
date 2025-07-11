@@ -7,6 +7,20 @@ public sealed record UpdateProductCommand(
 public sealed record UpdateProductResult(
     Product Product);
 
+public sealed class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+{
+    public UpdateProductCommandValidator()
+    {
+        RuleFor(c => c.Product.Name).NotEmpty().WithMessage("Product name is required.");
+        RuleFor(c => c.Product.Category).NotEmpty().WithMessage("Product category is required.");
+        RuleFor(c => c.Product.Description).NotEmpty().WithMessage("Product description is required.");
+        RuleFor(c => c.Product.ImageFile).NotEmpty().WithMessage("Product image file is required.");
+        RuleFor(c => c.Product.Price)
+            .GreaterThan(0)
+            .WithMessage("Product price must be greater than zero.");
+    }
+}
+
 public class UpdateProductHandler(
     IDocumentSession session,
     ILogger<UpdateProductHandler> logger)
