@@ -6,16 +6,26 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=catalogdb
-    restart: always
     ports:
       - "5532:5432"
     volumes:
       - postgres_catalog:/var/lib/postgresql/data/
 
+  basketdb:
+    container_name: basketdb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=basketdb
+    ports:
+      - "5533:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data/
+
   eshopms-pgadmin:
     container_name:   eshopms-pgadmin 
     image: dpage/pgadmin4
-    restart: always
     ports:
       - 9900:80
     environment:
@@ -24,6 +34,26 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Catalog.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=catalogdb;Port=5432;Database=catalogdb;User Id=postgres;Password=postgres;Include Error Detail=true
+      - MediatR__LicenseKey="eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxNzgzNjQxNjAwIiwiaWF0IjoiMTc1MjE1Njk1OCIsImFjY291bnRfaWQiOiIwMTk3ZjRiMTA3MzM3ZjRkYjUyN2IwZDQzYjkwZmJkOCIsImN1c3RvbWVyX2lkIjoiY3RtXzAxanp0YjJ2azhhNnI5d3B4amhicHd6MTc2Iiwic3ViX2lkIjoiLSIsImVkaXRpb24iOiIwIiwidHlwZSI6IjIifQ.bu3Wn3dBmrYhTVH22AEMk3uJZnXOCicSIpeg6POBuDMwh7OkpKupwvT7DQMW75EWAn7bOOYVC3R8P2wCJXqKH3dRkLtKnViOjIeg3EBazB3kvZKz8KMUEGehgPbrRfw3JIAN7-C4oneOflDGncZR2LGTieHB3Oxu3yLEicvTi95UHpTiPKXldjJ0fem8UIxql6oFQe4_dEMBKI4a9C8PngexLgKDjNXLRSeQjKNOJcwN6O6KJzsmXdAjrxJDVebThF2YuxZfLFl5Af9JDWpDla1DiqbnXc1k80iOiQB4jFyrVuein0ecanBS_p_ElPuQ4E975MnGsajdS7EOMhmASQ"
+    depends_on:
+      - catalogdb
+    ports:
+      - "6000:8080"
+      - "6060:8081"
+    volumes:
+      - ../https-dev:/https:ro
+
 volumes:
   postgres_catalog:
+  postgres_basket:
   pgadmin-data:

@@ -12,18 +12,18 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-      <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.2" />
-      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
-      <PackageReference Include="Carter" Version="8.2.1" />
-      <PackageReference Include="Marten" Version="8.3.1" />
-      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.4" />
-      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.4" />
+        <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.2" />
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+        <PackageReference Include="Carter" Version="8.2.1" />
+        <PackageReference Include="Marten" Version="8.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.4" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.4" />
     </ItemGroup>
 
 </Project>
