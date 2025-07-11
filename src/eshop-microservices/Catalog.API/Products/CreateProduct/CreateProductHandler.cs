@@ -25,16 +25,13 @@ public sealed class CreateProductCommandValidator : AbstractValidator<CreateProd
 }
 
 internal sealed class CreateProductHandler(
-    IDocumentSession session,
-    ILogger<CreateProductHandler> logger)
+    IDocumentSession session)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(
         CreateProductCommand request,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("CreateProductHandler.Handle called with {@request}", request);
-        
         var product = new Product
         {
             Name = request.Name,

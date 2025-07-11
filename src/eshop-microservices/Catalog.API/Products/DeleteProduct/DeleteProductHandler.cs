@@ -12,14 +12,11 @@ public sealed class DeleteProductCommandValidator : AbstractValidator<DeleteProd
 }
 
 public class DeleteProductHandler(
-    IDocumentSession session,
-    ILogger<DeleteProductHandler> logger)
+    IDocumentSession session)
     : ICommandHandler<DeleteProductCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("DeleteProductHandler.Handle called with {@request}", request);
-
         var product = await session.Query<Product>()
             .Where(p => p.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken); 

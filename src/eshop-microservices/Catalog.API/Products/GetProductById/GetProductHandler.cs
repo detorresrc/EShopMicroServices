@@ -9,14 +9,11 @@ public sealed record GetProductByIdResult(
     Product? Product);
 
 internal sealed class GetProductByIdQueryHandler(
-    IDocumentSession session,
-    ILogger<GetProductByIdQueryHandler> logger)
+    IDocumentSession session)
     : IQueryHandler<GetProductByIdQuery, Result<GetProductByIdResult>>
 {
     public async Task<Result<GetProductByIdResult>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("GetProductByIdQueryHandler.Handle called with {@request}", request);
-
         var product = await session.Query<Product>()
             .Where(p => p.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);

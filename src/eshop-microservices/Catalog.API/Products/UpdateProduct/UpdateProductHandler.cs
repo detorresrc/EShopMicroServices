@@ -22,14 +22,11 @@ public sealed class UpdateProductCommandValidator : AbstractValidator<UpdateProd
 }
 
 public class UpdateProductHandler(
-    IDocumentSession session,
-    ILogger<UpdateProductHandler> logger)
+    IDocumentSession session)
     : ICommandHandler<UpdateProductCommand, Result<UpdateProductResult>>
 {
     public async Task<Result<UpdateProductResult>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("UpdateProductHandler.Handle called with {@request}", request);
-
         var product = await session.Query<Product>()
             .Where(p => p.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken); 
