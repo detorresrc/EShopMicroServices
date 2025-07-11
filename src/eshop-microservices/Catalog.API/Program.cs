@@ -1,3 +1,5 @@
+using Catalog.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +18,9 @@ builder.Services.AddMarten(option => { option.Connection(builder.Configuration.G
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
+if (builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
 
 var app = builder.Build();
 
