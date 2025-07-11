@@ -5,5 +5,7 @@ global using Marten;
 global using FluentValidation;
 global using SharedKernel;
 global using SharedKernel.CQRS;
+global using SharedKernel.Behaviors;
+global using SharedKernel.Exceptions.Handler;
 global using Catalog.API.Errors;
 global using Catalog.API.Models;

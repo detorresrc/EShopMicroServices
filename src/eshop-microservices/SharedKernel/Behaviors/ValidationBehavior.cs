@@ -21,7 +21,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
                 .ToList();
 
         if (failures.Any())
-            throw new ValidationException(failures);
+            throw new ValidationException("Validation failed for one or more requests.", failures);
 
         return await next(cancellationToken);
     }

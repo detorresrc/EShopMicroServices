@@ -1,5 +1,3 @@
-using SharedKernel.Behaviors;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,12 +10,11 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 builder.Services.AddValidatorsFromAssembly(assembly);
-builder.Services.AddMarten(option =>
-{
-    option.Connection(builder.Configuration.GetConnectionString("Database")!);
-}).UseLightweightSessions();
+builder.Services.AddMarten(option => { option.Connection(builder.Configuration.GetConnectionString("Database")!); })
+    .UseLightweightSessions();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
@@ -27,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.MapCarter();
+app.UseExceptionHandler(options => { });
 
 app.Run();

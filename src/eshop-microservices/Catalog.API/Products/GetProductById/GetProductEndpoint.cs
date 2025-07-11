@@ -1,3 +1,5 @@
+using Catalog.API.Exceptions;
+
 namespace Catalog.API.Products.GetProductById;
 
 public sealed record GetProductByIdResponse(
@@ -12,7 +14,7 @@ public sealed class GetProductByIdEndpoint : ICarterModule
             {
                 var result = await sender.Send(new GetProductByIdQuery(id), cancellationToken);
                 return result.IsFailure 
-                    ? Results.Problem(result.Error.Message, statusCode: StatusCodes.Status404NotFound) 
+                    ? throw new ProductNotFoundException(id)
                     : Results.Ok(result.Value.Adapt<GetProductByIdResponse>());
             })
             .WithName("GetProductById")
