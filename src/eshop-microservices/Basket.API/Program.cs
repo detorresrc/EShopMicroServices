@@ -1,9 +1,11 @@
+using Discount.Grpc;
 using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var assembly = typeof(Program).Assembly;
+// Application Services
 builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
@@ -13,31 +15,47 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 builder.Services.AddValidatorsFromAssembly(assembly);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
+
+//Data Services
 builder.Services.AddMarten(option =>
 {
     option.Connection(builder.Configuration.GetConnectionString("Database")!);
     option.Schema.For<ShoppingCart>().Identity(x => x.Username);
 })
 .UseLightweightSessions();
-builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
-    .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
-
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.Decorate<IBasketRepository, CacheDBasketRepository>();
-// Without Scrutor, manually register the CacheDBasketRepository
-/*builder.Services.AddScoped<IBasketRepository>(provider =>
-{
-    var basketRepository = provider.GetRequiredService<IBasketRepository>();
-    return new CacheDBasketRepository(basketRepository, provider.GetRequiredService<IDistributedCache>());
-});*/
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
 });
+
+//Grpc Services
+var grpcClient = builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:Discount:Url"]!);
+});
+bool.TryParse(builder.Configuration["GrpcSettings:Discount:AcceptAnySSL"], out var allowedAnySsl);
+if (allowedAnySsl)
+{
+    grpcClient.ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = 
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        return handler;
+    });    
+}
+
+
+//Util Services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
+    .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
