@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Caching.Distributed;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,8 +23,21 @@ builder.Services.AddMarten(option =>
 })
 .UseLightweightSessions();
 builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
+    .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.Decorate<IBasketRepository, CacheDBasketRepository>();
+// Without Scrutor, manually register the CacheDBasketRepository
+/*builder.Services.AddScoped<IBasketRepository>(provider =>
+{
+    var basketRepository = provider.GetRequiredService<IBasketRepository>();
+    return new CacheDBasketRepository(basketRepository, provider.GetRequiredService<IDistributedCache>());
+});*/
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

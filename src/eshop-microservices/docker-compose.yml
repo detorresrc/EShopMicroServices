@@ -1,4 +1,11 @@
 services:
+  distributedcache:
+    image: redis
+    container_name: distributedcache
+    restart: always
+    ports:
+      - "6379:6379"
+
   catalogdb:
     container_name: catalogdb
     image: postgres
