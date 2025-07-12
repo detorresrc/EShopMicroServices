@@ -30,6 +30,18 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql/data/
 
+  discountdb:
+    container_name: discountdb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=discountdb
+    ports:
+      - "5534:5432"
+    volumes:
+      - postgres_discount:/var/lib/postgresql/data/
+
   eshopms-pgadmin:
     container_name:   eshopms-pgadmin 
     image: dpage/pgadmin4
@@ -63,4 +75,5 @@ services:
 volumes:
   postgres_catalog:
   postgres_basket:
+  postgres_discount:
   pgadmin-data:
