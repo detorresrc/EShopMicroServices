@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Discount.Grpc/Discount.Grpc.csproj", "Discount.Grpc/"]
+COPY ["../SharedKernel/SharedKernel.csproj", "SharedKernel/"]
 RUN dotnet restore "Discount.Grpc/Discount.Grpc.csproj"
 COPY . .
 WORKDIR "/src/Discount.Grpc"

@@ -31,4 +31,8 @@
       <Protobuf Include="Protos\discount.proto" GrpcServices="Server"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
+    </ItemGroup>
+
 </Project>

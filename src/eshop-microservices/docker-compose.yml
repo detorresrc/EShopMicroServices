@@ -71,6 +71,46 @@ services:
       - "6060:8081"
     volumes:
       - ../https-dev:/https:ro
+      - ./Config/CatalogAPI/appsettings.json:/app/appsettings.json:ro
+
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Basket.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=basketdb;User Id=postgres;Password=postgres;Include Error Detail=true
+      - MediatR__LicenseKey="eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxNzgzNjQxNjAwIiwiaWF0IjoiMTc1MjE1Njk1OCIsImFjY291bnRfaWQiOiIwMTk3ZjRiMTA3MzM3ZjRkYjUyN2IwZDQzYjkwZmJkOCIsImN1c3RvbWVyX2lkIjoiY3RtXzAxanp0YjJ2azhhNnI5d3B4amhicHd6MTc2Iiwic3ViX2lkIjoiLSIsImVkaXRpb24iOiIwIiwidHlwZSI6IjIifQ.bu3Wn3dBmrYhTVH22AEMk3uJZnXOCicSIpeg6POBuDMwh7OkpKupwvT7DQMW75EWAn7bOOYVC3R8P2wCJXqKH3dRkLtKnViOjIeg3EBazB3kvZKz8KMUEGehgPbrRfw3JIAN7-C4oneOflDGncZR2LGTieHB3Oxu3yLEicvTi95UHpTiPKXldjJ0fem8UIxql6oFQe4_dEMBKI4a9C8PngexLgKDjNXLRSeQjKNOJcwN6O6KJzsmXdAjrxJDVebThF2YuxZfLFl5Af9JDWpDla1DiqbnXc1k80iOiQB4jFyrVuein0ecanBS_p_ElPuQ4E975MnGsajdS7EOMhmASQ"
+    depends_on:
+      - basketdb
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    volumes:
+      - ../https-dev:/https:ro
+      - ./Config/BasketAPI/appsettings.json:/app/appsettings.json:ro
+
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: Discount.Grpc/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=discountdb;Port=5432;Database=discountdb;User Id=postgres;Password=postgres;Include Error Detail=true
+    depends_on:
+      - discountdb
+    ports:
+      - "6002:8080"
+      - "6062:8081"
+    volumes:
+      - ../https-dev:/https:ro
+      - ./Config/DiscountGrpc/appsettings.json:/app/appsettings.json:ro
 
 volumes:
   postgres_catalog:
