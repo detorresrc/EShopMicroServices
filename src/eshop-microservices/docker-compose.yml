@@ -42,6 +42,18 @@ services:
     volumes:
       - postgres_discount:/var/lib/postgresql/data/
 
+  orderdb:
+    container_name: orderdb
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=orderdb
+    ports:
+      - "5535:5432"
+    volumes:
+      - postgres_order:/var/lib/postgresql/data/
+
   eshopms-pgadmin:
     container_name:   eshopms-pgadmin 
     image: dpage/pgadmin4
@@ -119,4 +131,5 @@ volumes:
   postgres_catalog:
   postgres_basket:
   postgres_discount:
+  postgres_order:
   pgadmin-data:
