@@ -1,7 +1,13 @@
 namespace Ordering.Application.Orders.Commands.UpdateOrder;
 
 public record UpdateOrderCommand(OrderDto Order)
-    : ICommand<UpdateOrderResult>;
+    : ICommand<UpdateOrderResult>
+{
+    public static UpdateOrderCommand Of(OrderDto order)
+    {
+        return new UpdateOrderCommand(order);
+    }
+}
 
 public record UpdateOrderResult(bool IsSuccess);
 

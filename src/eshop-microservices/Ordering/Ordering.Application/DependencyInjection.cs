@@ -6,6 +6,7 @@ public static class DependencyInjection
     {
         services.AddMediatR(config =>
         {
+            config.LicenseKey = configuration.GetSection("MediatR:LicenseKey").Value ?? string.Empty;
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));

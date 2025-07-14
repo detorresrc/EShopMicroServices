@@ -1,7 +1,13 @@
 namespace Ordering.Application.Orders.Commands.CreateOrder;
 
 public record CreateOrderCommand(OrderDto Order)
-    : ICommand<CreateOrderResult>;
+    : ICommand<CreateOrderResult>
+{
+    public static CreateOrderCommand Of(OrderDto order)
+    {
+        return new CreateOrderCommand(order);
+    }
+}
     
 public record CreateOrderResult(Guid Id);
 

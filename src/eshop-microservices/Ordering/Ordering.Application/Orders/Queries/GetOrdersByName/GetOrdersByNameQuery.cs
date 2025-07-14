@@ -2,7 +2,13 @@ using Ordering.Application.Extensions;
 
 namespace Ordering.Application.Orders.Queries.GetOrdersByName;
 
-public record GetOrdersByNameQuery(string Name) : IQuery<GetOrdersByNameResult>;
+public record GetOrdersByNameQuery(string Name) : IQuery<GetOrdersByNameResult>
+{
+    public static GetOrdersByNameQuery Of(string name)
+    {
+        return new GetOrdersByNameQuery(name);
+    }
+}
 
 public record GetOrdersByNameResult(IEnumerable<OrderDto> Orders)
 {

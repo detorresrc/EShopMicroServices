@@ -8,22 +8,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\SharedKernel\SharedKernel.csproj" />
-      <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj" />
-      <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\SharedKernel\SharedKernel.csproj"/>
+        <ProjectReference Include="..\Ordering.Application\Ordering.Application.csproj"/>
+        <ProjectReference Include="..\Ordering.Infrastructure\Ordering.Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Carter" Version="8.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.18">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.4"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.4"/>
     </ItemGroup>
 
 </Project>

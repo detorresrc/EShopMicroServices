@@ -1,7 +1,13 @@
 namespace Ordering.Application.Orders.Commands.DeleteOrder;
 
 public record DeleteOrderCommand(Guid OrderId)
-    : ICommand<DeleteOrderResult>;
+    : ICommand<DeleteOrderResult>
+{
+    public static DeleteOrderCommand Of(Guid orderId)
+    {
+        return new DeleteOrderCommand(orderId);
+    }
+}
 
 public record DeleteOrderResult(bool IsSuccess);
 
