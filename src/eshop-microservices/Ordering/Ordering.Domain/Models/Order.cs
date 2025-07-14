@@ -46,12 +46,6 @@ public sealed class Order : Aggregate<OrderId>
         AddDomainEvent(new OrderUpdatedEvent(this));
     }
 
-    public void UpdateStatus(OrderStatus orderStatus)
-    {
-        Status = orderStatus;
-        AddDomainEvent(new OrderUpdatedEvent(this));
-    }
-
     public void Add(ProductId productId, int quantity, decimal price)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
