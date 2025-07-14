@@ -14,10 +14,4 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.18" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-      <Folder Include="Orders\EventHandlers\" />
-      <Folder Include="Orders\Queries\" />
-    </ItemGroup>
 </Project>
