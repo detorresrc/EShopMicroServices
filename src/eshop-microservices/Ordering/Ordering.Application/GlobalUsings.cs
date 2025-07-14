@@ -17,3 +17,4 @@ global using Ordering.Application.Exceptions;
 global using SharedKernel.Behaviors;
 global using Ordering.Domain.Events;
 global using Ordering.Application.Extensions;
+global using SharedKernel.Pagination;
