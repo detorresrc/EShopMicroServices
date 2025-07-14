@@ -7,6 +7,7 @@ public static class DependencyInjection
         services.AddCarter();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddExceptionHandler<CustomExceptionHandler>();
         
         return services;
     }
@@ -19,7 +20,7 @@ public static class DependencyInjection
             app.UseSwaggerUI();
         }
         app.MapCarter();
-        
+        app.UseExceptionHandler(options => { });
         return app;
     }
 }

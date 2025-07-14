@@ -10,3 +10,4 @@ global using Ordering.Application.Orders.Queries.GetOrders;
 global using SharedKernel.Pagination;
 global using Ordering.Application.Orders.Queries.GetOrdersByCustomer;
 global using Ordering.Application.Orders.Queries.GetOrdersByName;
+global using SharedKernel.Exceptions.Handler;
