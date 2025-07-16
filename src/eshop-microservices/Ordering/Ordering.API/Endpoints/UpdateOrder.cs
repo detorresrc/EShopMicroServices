@@ -16,6 +16,7 @@ public sealed class UpdateOrder : ICarterModule
                 })
             .WithName("UpdateOrder")
             .Produces<UpdateOrderResponse>()
+            .Produces<CustomErrorDetails>(StatusCodes.Status422UnprocessableEntity)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Update Order")

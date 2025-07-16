@@ -15,6 +15,7 @@ public sealed class GetOrders : ICarterModule
                 })
             .WithName("GetOrders")
             .Produces<GetOrdersResponse>()
+            .Produces<CustomErrorDetails>(StatusCodes.Status422UnprocessableEntity)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Get Orders")

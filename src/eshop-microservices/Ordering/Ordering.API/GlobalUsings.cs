@@ -1,6 +1,7 @@
 global using Carter;
 global using MediatR;
 
+global using SharedKernel;
 global using Ordering.Application.Orders.Commands.DeleteOrder;
 global using Ordering.Application.Dtos;
 global using Ordering.Application.Orders.Commands.CreateOrder;

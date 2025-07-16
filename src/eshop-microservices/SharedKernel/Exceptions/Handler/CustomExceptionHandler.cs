@@ -1,7 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace SharedKernel.Exceptions.Handler;
@@ -34,7 +33,7 @@ public sealed class CustomExceptionHandler(
             (
                 exception.Message,
                 exception.GetType().Name,
-                context.Response.StatusCode = StatusCodes.Status400BadRequest
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity
             ),
             NotFoundException =>
             (
@@ -42,7 +41,7 @@ public sealed class CustomExceptionHandler(
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status404NotFound
             ),
-            _ => 
+            _ =>
             (
                 "An unexpected error occurred.",
                 "InternalServerError",
@@ -50,19 +49,22 @@ public sealed class CustomExceptionHandler(
             )
         };
 
-        var problemDetails = new ProblemDetails
+        var problemDetails = new CustomErrorDetails
         {
             Title = details.Title,
             Detail = details.Detail,
-            Status = details.StatusCode,
+            StatusCode = details.StatusCode,
             Instance = context.Request.Path
         };
-        
-        problemDetails.Extensions.Add("traceId", context.TraceIdentifier);
-        if(exception is ValidationException validationException)
-            problemDetails.Extensions.Add("ValidationErrors", validationException.Errors);
 
-        await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
+        problemDetails.TraceId = context.TraceIdentifier;
+        if (exception is ValidationException validationException)
+            problemDetails.Errors =
+                validationException
+                    .Errors
+                    .Select(e => new ValidationError{ PropertyName = e.PropertyName, ErrorMessage = e.ErrorMessage });
+
+        await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
         return true;
     }
 }

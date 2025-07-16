@@ -15,6 +15,7 @@ public sealed class DeleteOrder : ICarterModule
             )
             .WithName("DeleteOrder")
             .Produces<DeleteOrderResponse>()
+            .Produces<CustomErrorDetails>(StatusCodes.Status422UnprocessableEntity)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Delete Order")

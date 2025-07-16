@@ -4,6 +4,8 @@ public record CreateOrderRequest(OrderDto Order);
 
 public record CreateOrderResponse(Guid Id);
 
+public record ValidationError(string PropertyName, string ErrorMessage);
+
 public sealed class CreateOrder : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
@@ -17,6 +19,7 @@ public sealed class CreateOrder : ICarterModule
                 })
             .WithName("CreateOrder")
             .Produces<CreateOrderResponse>(StatusCodes.Status201Created)
+            .Produces<CustomErrorDetails>(StatusCodes.Status422UnprocessableEntity)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Create Order")
             .WithDescription("Create Order");

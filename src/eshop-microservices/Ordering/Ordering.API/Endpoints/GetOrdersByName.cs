@@ -14,6 +14,7 @@ public sealed class GetOrdersByName : ICarterModule
                 })
             .WithName("GetOrdersByName")
             .Produces<GetOrdersResponse>()
+            .Produces<CustomErrorDetails>(StatusCodes.Status422UnprocessableEntity)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Get Orders by Name")

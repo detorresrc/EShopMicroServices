@@ -127,6 +127,26 @@ services:
       - ../https-dev:/https:ro
       - ./Config/DiscountGrpc/appsettings.json:/app/appsettings.json:ro
 
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: Ordering/Ordering.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=orderdb;Port=5432;Database=orderdb;User Id=postgres;Password=postgres;
+      - MediatR__LicenseKey="eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxNzgzNjQxNjAwIiwiaWF0IjoiMTc1MjE1Njk1OCIsImFjY291bnRfaWQiOiIwMTk3ZjRiMTA3MzM3ZjRkYjUyN2IwZDQzYjkwZmJkOCIsImN1c3RvbWVyX2lkIjoiY3RtXzAxanp0YjJ2azhhNnI5d3B4amhicHd6MTc2Iiwic3ViX2lkIjoiLSIsImVkaXRpb24iOiIwIiwidHlwZSI6IjIifQ.bu3Wn3dBmrYhTVH22AEMk3uJZnXOCicSIpeg6POBuDMwh7OkpKupwvT7DQMW75EWAn7bOOYVC3R8P2wCJXqKH3dRkLtKnViOjIeg3EBazB3kvZKz8KMUEGehgPbrRfw3JIAN7-C4oneOflDGncZR2LGTieHB3Oxu3yLEicvTi95UHpTiPKXldjJ0fem8UIxql6oFQe4_dEMBKI4a9C8PngexLgKDjNXLRSeQjKNOJcwN6O6KJzsmXdAjrxJDVebThF2YuxZfLFl5Af9JDWpDla1DiqbnXc1k80iOiQB4jFyrVuein0ecanBS_p_ElPuQ4E975MnGsajdS7EOMhmASQ"
+    depends_on:
+      - orderdb
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    volumes:
+      - ../https-dev:/https:ro
+      - ./Config/OrderingAPI/appsettings.json:/app/appsettings.json:ro
+
 volumes:
   postgres_catalog:
   postgres_basket:
