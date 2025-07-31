@@ -2,7 +2,7 @@ namespace Ordering.Domain.ValueObjects;
 
 public record OrderName
 {
-    private const int DefaultLength = 5;
+    private const int DefaultLength = 50;
 
     private OrderName(string value)
     {

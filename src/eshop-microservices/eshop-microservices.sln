@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Application", "Ord
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Infrastructure", "Ordering\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{3DDBF088-9558-4DA8-8373-FEF359260379}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel.Messaging", "SharedKernel.Messaging\SharedKernel.Messaging.csproj", "{E855D5E8-6E1B-41A8-99F9-76304845D706}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,5 +79,9 @@ Global
 		{3DDBF088-9558-4DA8-8373-FEF359260379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DDBF088-9558-4DA8-8373-FEF359260379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DDBF088-9558-4DA8-8373-FEF359260379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E855D5E8-6E1B-41A8-99F9-76304845D706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E855D5E8-6E1B-41A8-99F9-76304845D706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E855D5E8-6E1B-41A8-99F9-76304845D706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E855D5E8-6E1B-41A8-99F9-76304845D706}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

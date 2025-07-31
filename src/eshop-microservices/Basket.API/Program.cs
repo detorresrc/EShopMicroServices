@@ -1,5 +1,6 @@
 using Discount.Grpc;
 using Microsoft.Extensions.Caching.Distributed;
+using SharedKernel.Messaging.MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ if (allowedAnySsl)
     });    
 }
 
+//Async Communication Services
+builder.Services.AddMessageBroker(builder.Configuration);
 
 //Util Services
 builder.Services.AddEndpointsApiExplorer();
