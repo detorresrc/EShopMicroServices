@@ -166,6 +166,26 @@ services:
       - ../https-dev:/https:ro
       - ./Config/OrderingAPI/appsettings.json:/app/appsettings.json:ro
 
+  yarpapigateway:
+    image: ${DOCKER_REGISTRY-}yarpapigateway
+    build:
+      context: .
+      dockerfile: APIGateways/YarpAG/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    depends_on:
+      - catalog.api
+      - basket.api
+      - ordering.api
+    ports:
+      - "6004:8080"
+      - "6064:8081"
+    volumes:
+      - ../https-dev:/https:ro
+      - ./Config/OrderingAPI/appsettings.json:/app/appsettings.json:ro
+
 
 volumes:
   postgres_catalog:
